@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String mUsername;
 
-   // Instance variables for database
+    // Firebase instance variables
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
 
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         mUsername = ANONYMOUS;
 
-        // Instantiate database 
+        // Initialize firebase components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("messages");
 
@@ -115,7 +115,12 @@ public class MainActivity extends AppCompatActivity {
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Send messages on click
+
+                //Create a FriendlyMessage object with all the fields except for photoUrl, which will be null.
+                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, null);
+
+                // Send message to database
+                mMessagesDatabaseReference.push().setValue(friendlyMessage);
 
                 // Clear input box
                 mMessageEditText.setText("");
